@@ -201,22 +201,24 @@ namespace WinformUDload
             List<FileInformation> fileInformations = await GetWebFiles();
             Dictionary<string, string> dict = new Dictionary<string, string>();
             var fileNames = Directory.GetFiles(Path.GetDirectoryName(location)).ToList();
-            var fileList = (from a in fileNames
-                            //join b in fileInformations on a = b. 
-
-                            where (from b in fileInformations select b.FileName).Contains(a)
+            fileNames.ForEach(s =>
+            {
+                dict.Add(key: Path.GetFileName(s), value: s);
+            });
+            var fileList = (from a in dict
+                            join b in fileInformations on a.Key equals b.FileName
                             select a).ToList();
 
             List<FileInformation> localfileInformations = await GetWebFiles();
 
             fileList.ForEach(async f =>
             {
-                using (var fs = new FileStream(f, FileMode.Open, FileAccess.Read))
+                using (var fs = new FileStream(f.Value, FileMode.Open, FileAccess.Read))
                 {
 
                     FileInformation localFileInformation = new FileInformation
                     {
-                        FileName = Path.GetFileName(f),
+                        FileName = Path.GetFileName(f.Value),
                         FileMd5 = fs.GetFileMD5(),
                     };
 
