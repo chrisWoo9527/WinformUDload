@@ -33,6 +33,7 @@
             this.btnUpload = new DevComponents.DotNetBar.ButtonItem();
             this.btnDownload = new DevComponents.DotNetBar.ButtonItem();
             this.btnDownlaodMore = new DevComponents.DotNetBar.ButtonItem();
+            this.btnClear = new DevComponents.DotNetBar.ButtonItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
             this.RTxtMessage = new DevComponents.DotNetBar.Controls.RichTextBoxEx();
@@ -41,7 +42,6 @@
             this.FileMd5 = new DevComponents.DotNetBar.SuperGrid.GridColumn();
             this.FileSize = new DevComponents.DotNetBar.SuperGrid.GridColumn();
             this.LastModifyTime = new DevComponents.DotNetBar.SuperGrid.GridColumn();
-            this.btnClear = new DevComponents.DotNetBar.ButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.bar1)).BeginInit();
             this.panelEx1.SuspendLayout();
             this.SuspendLayout();
@@ -89,6 +89,13 @@
             // 
             this.btnDownlaodMore.Name = "btnDownlaodMore";
             this.btnDownlaodMore.Text = "批量下载";
+            this.btnDownlaodMore.Click += new System.EventHandler(this.btnDownlaodMore_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Text = "日志清屏";
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // openFileDialog1
             // 
@@ -177,12 +184,6 @@
             this.LastModifyTime.HeaderText = "修改时间";
             this.LastModifyTime.Name = "LastModifyTime";
             this.LastModifyTime.Width = 150;
-            // 
-            // btnClear
-            // 
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Text = "日志清屏";
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // Form1
             // 

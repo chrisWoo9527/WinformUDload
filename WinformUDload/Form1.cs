@@ -37,10 +37,17 @@ namespace WinformUDload
             superGridControl1.PrimaryGrid.AllowRowHeaderResize = true;
             //superGridControl1.PrimaryGrid.Filter.Visible = true;
             superGridControl1.PrimaryGrid.SelectionGranularity = DevComponents.DotNetBar.SuperGrid.SelectionGranularity.Row;
-            superGridControl1.PrimaryGrid.DataSource = await GetWebFiles();
+            superGridControl1.PrimaryGrid.DataSource = await GetWebFilesDataTable();
         }
 
-        private async Task<DataTable> GetWebFiles()
+        private async Task<DataTable> GetWebFilesDataTable()
+        {
+            List<FileInformation> fileInformations = await GetWebFiles();
+            return fileInformations.ToDataTable("fileInformations");
+
+        }
+
+        private async Task<List<FileInformation>> GetWebFiles()
         {
             DataTable data = null;
 
@@ -50,14 +57,14 @@ namespace WinformUDload
                 var response = await httpClient.GetAsync(url);
                 string json = await response.Content.ReadAsStringAsync();
                 var fileInformations = JsonConvert.DeserializeObject<List<FileInformation>>(json);
-                data = fileInformations.ToDataTable("fileInformations");
+                return fileInformations;
             }
-            return data;
         }
+
 
         private async void btnRefresh_ClickAsync(object sender, EventArgs e)
         {
-            superGridControl1.PrimaryGrid.DataSource = await GetWebFiles();
+            superGridControl1.PrimaryGrid.DataSource = await GetWebFilesDataTable();
         }
 
         private async void btnUpload_Click(object sender, EventArgs e)
@@ -77,6 +84,11 @@ namespace WinformUDload
         }
 
 
+        /// <summary>
+        ///   文件上传
+        /// </summary>
+        /// <param name="filePath">本地需要上传的文件路径</param>
+        /// <returns></returns>
         private async Task<FileUpLoadDto> FileUpload(string filePath)
         {
             FileUpLoadDto fileUpLoadDto = null;
@@ -94,6 +106,11 @@ namespace WinformUDload
             }
             return fileUpLoadDto;
         }
+
+        /// <summary>
+        ///  写日志到textbox当中
+        /// </summary>
+        /// <param name="msg"></param>
         protected void WriteMsg(string msg)
         {
             var timeMsg = $"{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}   :    ";
@@ -101,6 +118,11 @@ namespace WinformUDload
             RTxtMessage.AppendText("\r\n");
         }
 
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <returns></returns>
         private async Task<ResultMessage> DownFile(string fileName)
         {
             ResultMessage resultMessage = null;
@@ -137,6 +159,8 @@ namespace WinformUDload
         private async void btnDownload_Click(object sender, EventArgs e)
         {
             var fileName = GetDgvValue("FileName");
+            if (fileName == null)
+                return;
             ResultMessage resultMessage = await DownFile(fileName);
             if (resultMessage.Status)
                 WriteMsg($"  【{fileName}】 下载成功！ ");
@@ -145,16 +169,74 @@ namespace WinformUDload
         }
 
 
+        /// <summary>
+        /// 获取当前选中的数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         protected string GetDgvValue(string key)
         {
             var elements = superGridControl1.PrimaryGrid.GetSelectedRows();
-            GridRow gridrow = elements[0] as GridRow;
-            return gridrow.Cells[key].Value.ToString();
+            if (elements == null)
+            {
+                WriteMsg("当前无选中行");
+                return null;
+            }
+            else
+            {
+                GridRow gridrow = elements[0] as GridRow;
+                return gridrow.Cells[key].Value.ToString();
+            }
+
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             RTxtMessage.Clear();
+        }
+
+        private async void GetNeedDownFiles()
+        {
+            string location = Assembly.GetEntryAssembly().Location;
+            List<FileInformation> fileInformations = await GetWebFiles();
+            string[] filePaths = Directory.GetFiles(Path.GetDirectoryName(location));
+            var fileList = (from a in filePaths
+                            where (from b in fileInformations select b.FileName).Contains(a)
+                            select a).ToList();
+
+            List<FileInformation> localfileInformations = await GetWebFiles();
+
+            fileList.ForEach(async f =>
+            {
+                using (var fs = new FileStream(f, FileMode.Open, FileAccess.Read))
+                {
+
+                    FileInformation localFileInformation = new FileInformation
+                    {
+                        FileName = Path.GetFileName(f),
+                        FileMd5 = fs.GetFileMD5(),
+                    };
+
+                    var NeedDownfileInformation = fileInformations.Where(w => w.FileName == localFileInformation.FileName && w.FileMd5 != localFileInformation.FileMd5).FirstOrDefault();
+
+                    if (NeedDownfileInformation != null)
+                    {
+                        ResultMessage resultMessage = await DownFile(NeedDownfileInformation.FileName);
+                        if (resultMessage.Status)
+                            WriteMsg($"  【{NeedDownfileInformation.FileName}】 下载成功！ ");
+                        else
+                            WriteMsg($"  【{NeedDownfileInformation.FileName}】 下载失败:  " + resultMessage.Message);
+                    }
+
+                }
+            });
+
+
+        }
+
+        private  void btnDownlaodMore_Click(object sender, EventArgs e)
+        {
+             GetNeedDownFiles();
         }
     }
 }
