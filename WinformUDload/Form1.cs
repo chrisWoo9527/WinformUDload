@@ -204,7 +204,7 @@ namespace WinformUDload
             var fileList = (from a in fileNames
                             //join b in fileInformations on a = b. 
 
-                            where (from b in fileInformations select b.FileName).Contains(a.Values)
+                            where (from b in fileInformations select b.FileName).Contains(a)
                             select a).ToList();
 
             List<FileInformation> localfileInformations = await GetWebFiles();
