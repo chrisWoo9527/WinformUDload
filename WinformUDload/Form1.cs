@@ -199,9 +199,12 @@ namespace WinformUDload
         {
             string location = Assembly.GetEntryAssembly().Location;
             List<FileInformation> fileInformations = await GetWebFiles();
-            string[] filePaths = Directory.GetFiles(Path.GetDirectoryName(location));
-            var fileList = (from a in filePaths
-                            where (from b in fileInformations select b.FileName).Contains(a)
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var fileNames = Directory.GetFiles(Path.GetDirectoryName(location)).ToList();
+            var fileList = (from a in fileNames
+                            //join b in fileInformations on a = b. 
+
+                            where (from b in fileInformations select b.FileName).Contains(a.Values)
                             select a).ToList();
 
             List<FileInformation> localfileInformations = await GetWebFiles();
@@ -234,9 +237,9 @@ namespace WinformUDload
 
         }
 
-        private  void btnDownlaodMore_Click(object sender, EventArgs e)
+        private void btnDownlaodMore_Click(object sender, EventArgs e)
         {
-             GetNeedDownFiles();
+            GetNeedDownFiles();
         }
     }
 }
