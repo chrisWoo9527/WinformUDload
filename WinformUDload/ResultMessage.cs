@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace WinformUDload
 {
-    public class FileUpLoadDto
+    public class ResultMessage
     {
         public bool Status { get; set; }
         public string Message { get; set; }
-        public int? Seconds { get; set; }
-        public FileInformation fileInfo { get; set; }
     }
 }
