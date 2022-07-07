@@ -97,7 +97,7 @@ namespace WinformUDload
         protected void WriteMsg(string msg)
         {
             var timeMsg = $"{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}   :    ";
-            RTxtMessage.AppendText(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + msg);
+            RTxtMessage.AppendText(timeMsg + msg);
             RTxtMessage.AppendText("\r\n");
         }
 
@@ -113,10 +113,12 @@ namespace WinformUDload
                     var response = await client.GetAsync(url);
                     if (response.IsSuccessStatusCode)
                     {
-                        Stream stream = await response.Content.ReadAsStreamAsync();
-                        string winPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
-                        await stream.CopyToFileAsync(winPath);
-                        resultMessage = new ResultMessage { Status = true, Message = "成功" };
+                        using (var stream = await response.Content.ReadAsStreamAsync())
+                        {
+                            string winPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
+                            await stream.CopyToFileAsync(winPath);
+                            resultMessage = new ResultMessage { Status = true, Message = "成功" };
+                        }
                     }
                     else
                     {
@@ -137,9 +139,9 @@ namespace WinformUDload
             var fileName = GetDgvValue("FileName");
             ResultMessage resultMessage = await DownFile(fileName);
             if (resultMessage.Status)
-                WriteMsg($"  {fileName} 下载成功！ ");
+                WriteMsg($"  【{fileName}】 下载成功！ ");
             else
-                WriteMsg($"  {fileName} 下载失败:  " + resultMessage.Message);
+                WriteMsg($"  【{fileName}】 下载失败:  " + resultMessage.Message);
         }
 
 
@@ -148,6 +150,11 @@ namespace WinformUDload
             var elements = superGridControl1.PrimaryGrid.GetSelectedRows();
             GridRow gridrow = elements[0] as GridRow;
             return gridrow.Cells[key].Value.ToString();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            RTxtMessage.Clear();
         }
     }
 }

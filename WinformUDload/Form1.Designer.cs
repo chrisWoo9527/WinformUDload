@@ -35,12 +35,13 @@
             this.btnDownlaodMore = new DevComponents.DotNetBar.ButtonItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
+            this.RTxtMessage = new DevComponents.DotNetBar.Controls.RichTextBoxEx();
             this.superGridControl1 = new DevComponents.DotNetBar.SuperGrid.SuperGridControl();
             this.FileName = new DevComponents.DotNetBar.SuperGrid.GridColumn();
             this.FileMd5 = new DevComponents.DotNetBar.SuperGrid.GridColumn();
             this.FileSize = new DevComponents.DotNetBar.SuperGrid.GridColumn();
             this.LastModifyTime = new DevComponents.DotNetBar.SuperGrid.GridColumn();
-            this.RTxtMessage = new DevComponents.DotNetBar.Controls.RichTextBoxEx();
+            this.btnClear = new DevComponents.DotNetBar.ButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.bar1)).BeginInit();
             this.panelEx1.SuspendLayout();
             this.SuspendLayout();
@@ -55,7 +56,8 @@
             this.btnRefresh,
             this.btnUpload,
             this.btnDownload,
-            this.btnDownlaodMore});
+            this.btnDownlaodMore,
+            this.btnClear});
             this.bar1.Location = new System.Drawing.Point(0, 0);
             this.bar1.Name = "bar1";
             this.bar1.Size = new System.Drawing.Size(1197, 27);
@@ -112,6 +114,22 @@
             this.panelEx1.TabIndex = 5;
             this.panelEx1.Text = "panelEx1";
             // 
+            // RTxtMessage
+            // 
+            // 
+            // 
+            // 
+            this.RTxtMessage.BackgroundStyle.Class = "RichTextBoxBorder";
+            this.RTxtMessage.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.RTxtMessage.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RTxtMessage.Location = new System.Drawing.Point(720, 0);
+            this.RTxtMessage.Name = "RTxtMessage";
+            this.RTxtMessage.Rtf = "{\\rtf1\\ansi\\ansicpg936\\deff0\\nouicompat\\deflang1033\\deflangfe2052{\\fonttbl{\\f0\\fn" +
+    "il\\fcharset134 \\\'cb\\\'ce\\\'cc\\\'e5;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4" +
+    "\\uc1 \r\n\\pard\\f0\\fs18\\lang2052\\par\r\n}\r\n";
+            this.RTxtMessage.Size = new System.Drawing.Size(477, 546);
+            this.RTxtMessage.TabIndex = 7;
+            // 
             // superGridControl1
             // 
             this.superGridControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -160,21 +178,11 @@
             this.LastModifyTime.Name = "LastModifyTime";
             this.LastModifyTime.Width = 150;
             // 
-            // RTxtMessage
+            // btnClear
             // 
-            // 
-            // 
-            // 
-            this.RTxtMessage.BackgroundStyle.Class = "RichTextBoxBorder";
-            this.RTxtMessage.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.RTxtMessage.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RTxtMessage.Location = new System.Drawing.Point(720, 0);
-            this.RTxtMessage.Name = "RTxtMessage";
-            this.RTxtMessage.Rtf = "{\\rtf1\\ansi\\ansicpg936\\deff0\\nouicompat\\deflang1033\\deflangfe2052{\\fonttbl{\\f0\\fn" +
-    "il\\fcharset134 \\\'cb\\\'ce\\\'cc\\\'e5;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4" +
-    "\\uc1 \r\n\\pard\\f0\\fs18\\lang2052\\par\r\n}\r\n";
-            this.RTxtMessage.Size = new System.Drawing.Size(477, 546);
-            this.RTxtMessage.TabIndex = 7;
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Text = "日志清屏";
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // Form1
             // 
@@ -206,6 +214,7 @@
         private DevComponents.DotNetBar.SuperGrid.GridColumn FileSize;
         private DevComponents.DotNetBar.SuperGrid.GridColumn LastModifyTime;
         private DevComponents.DotNetBar.Controls.RichTextBoxEx RTxtMessage;
+        private DevComponents.DotNetBar.ButtonItem btnClear;
     }
 }
 
