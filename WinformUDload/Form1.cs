@@ -38,6 +38,7 @@ namespace WinformUDload
             //superGridControl1.PrimaryGrid.Filter.Visible = true;
             superGridControl1.PrimaryGrid.SelectionGranularity = DevComponents.DotNetBar.SuperGrid.SelectionGranularity.Row;
             superGridControl1.PrimaryGrid.DataSource = await GetWebFilesDataTable();
+            openFileDialog1.Multiselect = true;  // 允许多选
         }
 
         private async Task<DataTable> GetWebFilesDataTable()
@@ -69,15 +70,26 @@ namespace WinformUDload
         {
             if (DialogResult.OK == openFileDialog1.ShowDialog())
             {
-                FileUpLoadDto fileUpLoadDto = await FileUpload(openFileDialog1.FileName);
+                string[] fileNames = openFileDialog1.FileNames;
+                WriteMsg($"当前上传文件个数 {fileNames.Count()} ,开始上传~");
 
-                if (fileUpLoadDto.Status)
+                for (int i = 0; i < fileNames.Length; i++)
                 {
-                    btnRefresh_ClickAsync(sender, e);
-                    WriteMsg($"上传文件成功,文件MD5值：{fileUpLoadDto.fileInfo.FileMd5}");
+                    string fileName = fileNames[i];
+                    FileUpLoadDto fileUpLoadDto = await FileUpload(fileName);
+
+                    if (fileUpLoadDto.Status)
+                    {
+                        btnRefresh_ClickAsync(sender, e);
+                        WriteMsg($"上传【{fileName}】成功,文件MD5值：{fileUpLoadDto.fileInfo.FileMd5}~");
+                    }
+                    else
+                        WriteMsg($"上传【{fileName}】失败：{fileUpLoadDto.Message}~");
+
                 }
-                else
-                    WriteMsg($"上传文件失败：{fileUpLoadDto.Message}");
+
+                WriteMsg($"上传完成~");
+
             }
         }
 
@@ -225,7 +237,6 @@ namespace WinformUDload
                                  from a in fileInformations
                                  where !(from b in list select b).Any(b => a.FileName == b.FileName)
                                  select a).ToList();
-
             return needDownInfos;
         }
 
@@ -260,6 +271,36 @@ namespace WinformUDload
         {
             var fileInformations = await GetNeedDownFiles();
             DownNeedFile(fileInformations);
+        }
+
+        private async void btnDelete_Click(object sender, EventArgs e)
+        {
+            var fileName = GetDgvValue("FileName");
+            if (fileName == null)
+                return;
+
+            if (MessageBox.Show($"确定要删除文明名【{fileName}】? 当前操作不可逆~", "", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+
+                using (var client = new HttpClient())
+                {
+                    var url = ConfigurationManager.AppSettings["DelInfo"].ToString();
+                    url += $"?fileName={fileName}";
+                    var response = client.DeleteAsync(url).Result;
+                    string json = await response.Content.ReadAsStringAsync();
+                    ResultMessage resultMessage = JsonConvert.DeserializeObject<ResultMessage>(json);
+                    if (resultMessage.Status)
+                    {
+                        WriteMsg($"【{fileName}】删除成功~");
+                    }
+                    else
+                    {
+                        WriteMsg($"【{fileName}】删除失败:{resultMessage.Message}~");
+                    }
+                }
+
+                btnRefresh_ClickAsync(sender, e);
+            }
         }
     }
 }
