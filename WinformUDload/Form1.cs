@@ -39,7 +39,6 @@ namespace WinformUDload
             superGridControl1.PrimaryGrid.RowHeaderIndexOffset = 1;
             // 允许调整行头宽度
             superGridControl1.PrimaryGrid.AllowRowHeaderResize = true;
-            //superGridControl1.PrimaryGrid.Filter.Visible = true;
             superGridControl1.PrimaryGrid.SelectionGranularity = DevComponents.DotNetBar.SuperGrid.SelectionGranularity.Row;
             superGridControl1.PrimaryGrid.DataSource = await _fls.GetWebFilesDataTable();
             openFileDialog1.Multiselect = true;  // 允许多选
@@ -70,9 +69,7 @@ namespace WinformUDload
                     }
                     else
                         WriteMsg($"上传【{fileName}】失败：{fileUpLoadDto.Message}~");
-
                 }
-
                 WriteMsg($"上传完成~");
 
             }
@@ -139,7 +136,6 @@ namespace WinformUDload
                 return;
             }
 
-
             WriteMsg($"开始下载 文件个数：{input.Count()}");
 
             input.ForEach(async f =>
@@ -151,7 +147,6 @@ namespace WinformUDload
                     WriteMsg($"【{f.FileName}】 下载失败:  " + resultMessage.Message);
 
             });
-
         }
 
         private async void btnDownlaodMore_Click(object sender, EventArgs e)
@@ -169,7 +164,6 @@ namespace WinformUDload
             if (MessageBox.Show($"确定要删除文明名【{fileName}】? 当前操作不可逆~", "",
                                                            MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-
                 ResultMessage resultMessage = await _fls.DeleteFile(fileName);
                 if (resultMessage.Status)
                 {
@@ -179,7 +173,6 @@ namespace WinformUDload
                 {
                     WriteMsg($"【{fileName}】删除失败:{resultMessage.Message}~");
                 }
-
                 btnRefresh_ClickAsync(sender, e);
             }
         }
