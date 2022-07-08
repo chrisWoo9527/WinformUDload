@@ -61,7 +61,7 @@
             this.bar1.Location = new System.Drawing.Point(0, 0);
             this.bar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.bar1.Name = "bar1";
-            this.bar1.Size = new System.Drawing.Size(1396, 30);
+            this.bar1.Size = new System.Drawing.Size(1352, 30);
             this.bar1.Stretch = true;
             this.bar1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.bar1.TabIndex = 4;
@@ -113,7 +113,7 @@
             this.panelEx1.Location = new System.Drawing.Point(0, 30);
             this.panelEx1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelEx1.Name = "panelEx1";
-            this.panelEx1.Size = new System.Drawing.Size(1396, 638);
+            this.panelEx1.Size = new System.Drawing.Size(1352, 675);
             this.panelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -131,13 +131,13 @@
             this.RTxtMessage.BackgroundStyle.Class = "RichTextBoxBorder";
             this.RTxtMessage.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.RTxtMessage.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RTxtMessage.Location = new System.Drawing.Point(840, 0);
+            this.RTxtMessage.Location = new System.Drawing.Point(796, 0);
             this.RTxtMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RTxtMessage.Name = "RTxtMessage";
             this.RTxtMessage.Rtf = "{\\rtf1\\ansi\\ansicpg936\\deff0\\nouicompat\\deflang1033\\deflangfe2052{\\fonttbl{\\f0\\fn" +
     "il\\fcharset134 \\\'cb\\\'ce\\\'cc\\\'e5;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4" +
     "\\uc1 \r\n\\pard\\f0\\fs21\\lang2052\\par\r\n}\r\n";
-            this.RTxtMessage.Size = new System.Drawing.Size(556, 638);
+            this.RTxtMessage.Size = new System.Drawing.Size(556, 675);
             this.RTxtMessage.TabIndex = 7;
             // 
             // superGridControl1
@@ -156,7 +156,7 @@
             this.superGridControl1.PrimaryGrid.Columns.Add(this.FileMd5);
             this.superGridControl1.PrimaryGrid.Columns.Add(this.FileSize);
             this.superGridControl1.PrimaryGrid.Columns.Add(this.LastModifyTime);
-            this.superGridControl1.Size = new System.Drawing.Size(1396, 638);
+            this.superGridControl1.Size = new System.Drawing.Size(1352, 675);
             this.superGridControl1.TabIndex = 6;
             this.superGridControl1.Text = "superGridControl1";
             // 
@@ -193,7 +193,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1396, 668);
+            this.ClientSize = new System.Drawing.Size(1352, 705);
             this.Controls.Add(this.panelEx1);
             this.Controls.Add(this.bar1);
             this.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));

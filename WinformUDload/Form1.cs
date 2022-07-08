@@ -81,7 +81,6 @@ namespace WinformUDload
             }
         }
 
-
         /// <summary>
         ///   文件上传
         /// </summary>
@@ -111,7 +110,7 @@ namespace WinformUDload
         /// <param name="msg"></param>
         protected void WriteMsg(string msg)
         {
-            var timeMsg = $"{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}   :    ";
+            var timeMsg = $"{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")} : ";
             RTxtMessage.AppendText(timeMsg + msg);
             RTxtMessage.AppendText("\r\n");
         }
@@ -161,11 +160,10 @@ namespace WinformUDload
                 return;
             ResultMessage resultMessage = await DownFile(fileName);
             if (resultMessage.Status)
-                WriteMsg($"  【{fileName}】 下载成功！ ");
+                WriteMsg($"【{fileName}】 下载成功！ ");
             else
-                WriteMsg($"  【{fileName}】 下载失败:  " + resultMessage.Message);
+                WriteMsg($"【{fileName}】 下载失败:  " + resultMessage.Message);
         }
-
 
         /// <summary>
         /// 获取当前选中的数据
@@ -186,7 +184,6 @@ namespace WinformUDload
                 GridRow gridrow = elements[0] as GridRow;
                 return gridrow.Cells[key].Value.ToString();
             }
-
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -194,31 +191,29 @@ namespace WinformUDload
             RTxtMessage.Clear();
         }
 
+        /// <summary>
+        /// 获取可以更新文件信息
+        /// </summary>
+        /// <returns></returns>
         private async Task<List<FileInformation>> GetNeedDownFiles()
         {
             List<FileDownloadDto> list = new List<FileDownloadDto>();
             string location = Assembly.GetEntryAssembly().Location;
             List<FileInformation> fileInformations = await GetWebFiles();
-            string[] localPathArray = Directory.GetFiles(Path.GetDirectoryName(location));
-            string[] localPathArray2 = (from a in localPathArray
-                                        join b in fileInformations on Path.GetFileName(a) equals b.FileName
-                                        select a).ToArray();
+            string[] localPathArray = (from a in Directory.GetFiles(Path.GetDirectoryName(location))
+                                       join b in fileInformations on Path.GetFileName(a) equals b.FileName
+                                       select a).ToArray();
 
-            for (int i = 0; i < localPathArray2.Length; i++)
+            for (int i = 0; i < localPathArray.Length; i++)
             {
-                string itemPath = localPathArray2[i];
-
-                if (!itemPath.EndsWith("Masuit.Tools.dll"))
+                string itemPath = localPathArray[i];
+                using (var fs = new FileStream(itemPath, FileMode.Open))
                 {
-                    using (var fs = new FileStream(itemPath, FileMode.Open))
+                    list.Add(new FileDownloadDto
                     {
-                        list.Add(new FileDownloadDto
-                        {
-                            FileName = Path.GetFileName(itemPath),
-                            FileMd5 = fs.GetFileMD5(),
-                            FileNamePath = itemPath,
-                        });
-                    }
+                        FileName = Path.GetFileName(itemPath),
+                        FileMd5 = fs.GetFileMD5()
+                    });
                 }
             }
 
@@ -234,17 +229,31 @@ namespace WinformUDload
             return needDownInfos;
         }
 
+        /// <summary>
+        /// 下载文件循环
+        /// </summary>
+        /// <param name="input"></param>
         private void DownNeedFile(List<FileInformation> input)
         {
+            if (!input.Any())
+            {
+                WriteMsg($"当前没有需要下载的内容 ");
+                return;
+            }
+
+
+            WriteMsg($"开始下载 文件个数：{input.Count()}");
+
             input.ForEach(async f =>
             {
                 ResultMessage resultMessage = await DownFile(f.FileName);
                 if (resultMessage.Status)
-                    WriteMsg($"  【{f.FileName}】 下载成功！ ");
+                    WriteMsg($"【{f.FileName}】 下载成功！ ");
                 else
-                    WriteMsg($"  【{f.FileName}】 下载失败:  " + resultMessage.Message);
+                    WriteMsg($"【{f.FileName}】 下载失败:  " + resultMessage.Message);
 
             });
+
         }
 
         private async void btnDownlaodMore_Click(object sender, EventArgs e)
