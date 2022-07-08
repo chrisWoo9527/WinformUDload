@@ -281,7 +281,6 @@ namespace WinformUDload
 
             if (MessageBox.Show($"确定要删除文明名【{fileName}】? 当前操作不可逆~", "", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-
                 using (var client = new HttpClient())
                 {
                     var url = ConfigurationManager.AppSettings["DelInfo"].ToString();
