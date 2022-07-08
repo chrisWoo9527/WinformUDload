@@ -49,8 +49,6 @@ namespace WinformUDload
 
         private async Task<List<FileInformation>> GetWebFiles()
         {
-            DataTable data = null;
-
             using (HttpClient httpClient = new HttpClient())
             {
                 var url = ConfigurationManager.AppSettings["GetInfo"].ToString();
@@ -177,7 +175,8 @@ namespace WinformUDload
         protected string GetDgvValue(string key)
         {
             var elements = superGridControl1.PrimaryGrid.GetSelectedRows();
-            if (elements == null)
+
+            if (elements.Count() == 0)
             {
                 WriteMsg("当前无选中行");
                 return null;
@@ -195,53 +194,63 @@ namespace WinformUDload
             RTxtMessage.Clear();
         }
 
-        private async void GetNeedDownFiles()
+        private async Task<List<FileInformation>> GetNeedDownFiles()
         {
+            List<FileDownloadDto> list = new List<FileDownloadDto>();
             string location = Assembly.GetEntryAssembly().Location;
             List<FileInformation> fileInformations = await GetWebFiles();
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            var fileNames = Directory.GetFiles(Path.GetDirectoryName(location)).ToList();
-            fileNames.ForEach(s =>
-            {
-                dict.Add(key: Path.GetFileName(s), value: s);
-            });
-            var fileList = (from a in dict
-                            join b in fileInformations on a.Key equals b.FileName
-                            select a).ToList();
+            string[] localPathArray = Directory.GetFiles(Path.GetDirectoryName(location));
+            string[] localPathArray2 = (from a in localPathArray
+                                        join b in fileInformations on Path.GetFileName(a) equals b.FileName
+                                        select a).ToArray();
 
-            List<FileInformation> localfileInformations = await GetWebFiles();
-
-            fileList.ForEach(async f =>
+            for (int i = 0; i < localPathArray2.Length; i++)
             {
-                using (var fs = new FileStream(f.Value, FileMode.Open, FileAccess.Read))
+                string itemPath = localPathArray2[i];
+
+                if (!itemPath.EndsWith("Masuit.Tools.dll"))
                 {
-
-                    FileInformation localFileInformation = new FileInformation
+                    using (var fs = new FileStream(itemPath, FileMode.Open))
                     {
-                        FileName = Path.GetFileName(f.Value),
-                        FileMd5 = fs.GetFileMD5(),
-                    };
-
-                    var NeedDownfileInformation = fileInformations.Where(w => w.FileName == localFileInformation.FileName && w.FileMd5 != localFileInformation.FileMd5).FirstOrDefault();
-
-                    if (NeedDownfileInformation != null)
-                    {
-                        ResultMessage resultMessage = await DownFile(NeedDownfileInformation.FileName);
-                        if (resultMessage.Status)
-                            WriteMsg($"  【{NeedDownfileInformation.FileName}】 下载成功！ ");
-                        else
-                            WriteMsg($"  【{NeedDownfileInformation.FileName}】 下载失败:  " + resultMessage.Message);
+                        list.Add(new FileDownloadDto
+                        {
+                            FileName = Path.GetFileName(itemPath),
+                            FileMd5 = fs.GetFileMD5(),
+                            FileNamePath = itemPath,
+                        });
                     }
-
                 }
-            });
+            }
 
+            var needDownInfos = (from a in fileInformations
+                                 join b in list on a.FileName equals b.FileName
+                                 where a.FileName == b.FileName && a.FileMd5 != b.FileMd5
+                                 select a).
+                                 Concat(
+                                 from a in fileInformations
+                                 where !(from b in list select b).Any(b => a.FileName == b.FileName)
+                                 select a).ToList();
 
+            return needDownInfos;
         }
 
-        private void btnDownlaodMore_Click(object sender, EventArgs e)
+        private void DownNeedFile(List<FileInformation> input)
         {
-            GetNeedDownFiles();
+            input.ForEach(async f =>
+            {
+                ResultMessage resultMessage = await DownFile(f.FileName);
+                if (resultMessage.Status)
+                    WriteMsg($"  【{f.FileName}】 下载成功！ ");
+                else
+                    WriteMsg($"  【{f.FileName}】 下载失败:  " + resultMessage.Message);
+
+            });
+        }
+
+        private async void btnDownlaodMore_Click(object sender, EventArgs e)
+        {
+            var fileInformations = await GetNeedDownFiles();
+            DownNeedFile(fileInformations);
         }
     }
 }

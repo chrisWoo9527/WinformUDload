@@ -59,8 +59,9 @@
             this.btnDownlaodMore,
             this.btnClear});
             this.bar1.Location = new System.Drawing.Point(0, 0);
+            this.bar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.bar1.Name = "bar1";
-            this.bar1.Size = new System.Drawing.Size(1197, 27);
+            this.bar1.Size = new System.Drawing.Size(1396, 30);
             this.bar1.Stretch = true;
             this.bar1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.bar1.TabIndex = 4;
@@ -109,9 +110,10 @@
             this.panelEx1.Controls.Add(this.superGridControl1);
             this.panelEx1.DisabledBackColor = System.Drawing.Color.Empty;
             this.panelEx1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelEx1.Location = new System.Drawing.Point(0, 27);
+            this.panelEx1.Location = new System.Drawing.Point(0, 30);
+            this.panelEx1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelEx1.Name = "panelEx1";
-            this.panelEx1.Size = new System.Drawing.Size(1197, 546);
+            this.panelEx1.Size = new System.Drawing.Size(1396, 638);
             this.panelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -129,12 +131,13 @@
             this.RTxtMessage.BackgroundStyle.Class = "RichTextBoxBorder";
             this.RTxtMessage.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.RTxtMessage.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RTxtMessage.Location = new System.Drawing.Point(720, 0);
+            this.RTxtMessage.Location = new System.Drawing.Point(840, 0);
+            this.RTxtMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RTxtMessage.Name = "RTxtMessage";
             this.RTxtMessage.Rtf = "{\\rtf1\\ansi\\ansicpg936\\deff0\\nouicompat\\deflang1033\\deflangfe2052{\\fonttbl{\\f0\\fn" +
     "il\\fcharset134 \\\'cb\\\'ce\\\'cc\\\'e5;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4" +
-    "\\uc1 \r\n\\pard\\f0\\fs18\\lang2052\\par\r\n}\r\n";
-            this.RTxtMessage.Size = new System.Drawing.Size(477, 546);
+    "\\uc1 \r\n\\pard\\f0\\fs21\\lang2052\\par\r\n}\r\n";
+            this.RTxtMessage.Size = new System.Drawing.Size(556, 638);
             this.RTxtMessage.TabIndex = 7;
             // 
             // superGridControl1
@@ -144,6 +147,7 @@
             this.superGridControl1.FilterExprColors.SysFunction = System.Drawing.Color.DarkRed;
             this.superGridControl1.ForeColor = System.Drawing.Color.Black;
             this.superGridControl1.Location = new System.Drawing.Point(0, 0);
+            this.superGridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.superGridControl1.Name = "superGridControl1";
             // 
             // 
@@ -152,7 +156,7 @@
             this.superGridControl1.PrimaryGrid.Columns.Add(this.FileMd5);
             this.superGridControl1.PrimaryGrid.Columns.Add(this.FileSize);
             this.superGridControl1.PrimaryGrid.Columns.Add(this.LastModifyTime);
-            this.superGridControl1.Size = new System.Drawing.Size(1197, 546);
+            this.superGridControl1.Size = new System.Drawing.Size(1396, 638);
             this.superGridControl1.TabIndex = 6;
             this.superGridControl1.Text = "superGridControl1";
             // 
@@ -187,11 +191,13 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1197, 573);
+            this.ClientSize = new System.Drawing.Size(1396, 668);
             this.Controls.Add(this.panelEx1);
             this.Controls.Add(this.bar1);
+            this.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.Text = "";
             this.Load += new System.EventHandler(this.Form1_Load);

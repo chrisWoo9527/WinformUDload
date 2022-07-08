@@ -56,8 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileInformation.cs" />
-    <Compile Include="FileUpLoadDto.cs" />
+    <Compile Include="Dto\FileDownloadDto.cs" />
+    <Compile Include="Model\FileInformation.cs" />
+    <Compile Include="Dto\FileUpLoadDto.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
