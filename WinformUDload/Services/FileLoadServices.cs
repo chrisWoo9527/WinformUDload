@@ -131,6 +131,10 @@ namespace WinformUDload.Services
         public async Task<DataTable> GetWebFilesDataTable()
         {
             List<FileInformation> fileInformations = await GetWebFiles();
+            if (!fileInformations.Any())
+            {
+                return null;
+            }
             return fileInformations.ToDataTable("fileInformations");
 
         }
