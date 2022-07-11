@@ -40,14 +40,18 @@ namespace WinformUDload
             // 允许调整行头宽度
             superGridControl1.PrimaryGrid.AllowRowHeaderResize = true;
             superGridControl1.PrimaryGrid.SelectionGranularity = DevComponents.DotNetBar.SuperGrid.SelectionGranularity.Row;
-            superGridControl1.PrimaryGrid.DataSource = await _fls.GetWebFilesDataTable();
+            DataTable dt = await _fls.GetWebFilesDataTable();
+            if (dt != null)
+                superGridControl1.PrimaryGrid.DataSource = dt;
             openFileDialog1.Multiselect = true;  // 允许多选
         }
 
 
         private async void btnRefresh_ClickAsync(object sender, EventArgs e)
         {
-            superGridControl1.PrimaryGrid.DataSource = await _fls.GetWebFilesDataTable();
+            DataTable dt = await _fls.GetWebFilesDataTable();
+            if (dt != null)
+                superGridControl1.PrimaryGrid.DataSource = dt;
         }
 
         private async void btnUpload_Click(object sender, EventArgs e)
@@ -174,6 +178,12 @@ namespace WinformUDload
                 }
                 btnRefresh_ClickAsync(sender, e);
             }
+        }
+
+        private void RTxtMessage_TextChanged(object sender, EventArgs e)
+        {
+            RTxtMessage.SelectionStart = RTxtMessage.Text.Length;
+            RTxtMessage.ScrollToCaret();
         }
     }
 }

@@ -147,6 +147,7 @@
     "\\uc1 \r\n\\pard\\f0\\fs21\\lang2052\\par\r\n}\r\n";
             this.RTxtMessage.Size = new System.Drawing.Size(1215, 144);
             this.RTxtMessage.TabIndex = 7;
+            this.RTxtMessage.TextChanged += new System.EventHandler(this.RTxtMessage_TextChanged);
             // 
             // superGridControl1
             // 
