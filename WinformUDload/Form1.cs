@@ -71,7 +71,6 @@ namespace WinformUDload
                         WriteMsg($"上传【{fileName}】失败：{fileUpLoadDto.Message}~");
                 }
                 WriteMsg($"上传完成~");
-
             }
         }
 
